@@ -27,20 +27,10 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// GET - RETRIEVE DAT FROM THE SERVER
-app.post('/', (req, res) => {
-  const user = new User();
-  user.name = req.body.name;
-  user.email = req.body.email;
-  user.password = req.body.password;
-  user.save((err) => {
-    if (err) {
-      res.json(err);
-    } else {
-      res.json('Successfully saved');
-    }
-  });
-});
+// APIS
+const productRoutes = require('./routes/product');
+
+app.use('/api', productRoutes);
 
 // POST - SEND DATA FROM FRONTEND TO BACK END
 
