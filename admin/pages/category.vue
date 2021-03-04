@@ -61,6 +61,8 @@ export default {
         const response = await this.$axios.$post('http://localhost:3000/api/categories', data);
 
         this.categories.push(data);
+
+        this.type = '';
       } catch (err) {
         console.log(err);
       }
