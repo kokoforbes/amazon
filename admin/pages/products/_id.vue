@@ -6,7 +6,7 @@
         <div class="col-sm-6">
           <div class="a-section">
             <div class="a-spacing-top-medium"></div>
-            <h2 style="text-align: center">Add new Product</h2>
+            <h2 style="text-align: center">Update {{product.title}}</h2>
 
             <form>
               <!-- category dropdown -->
@@ -32,27 +32,27 @@
               <!-- title input -->
               <div class="a-spacing-top-medium">
                 <label>Title</label>
-                <input type="text" class="a-input-text" style="width: 100%" v-model="title">
+                <input type="text" class="a-input-text" style="width: 100%" v-model="title" :placeholder="product.title">
               </div>
 
               <!-- price input -->
               <div class="a-spacing-top-medium">
                 <label>Price</label>
-                <input type="number" class="a-input-text" style="width: 100%" v-model="price">
+                <input type="number" class="a-input-text" style="width: 100%" v-model="price" :placeholder="product.price">
               </div>
 
               <!-- stockquantity input -->
               <div class="a-spacing-top-medium">
                 <label>Stock quantity</label>
                 <input type="number" class="a-input-text" style="width: 100%"
-                v-model="stockQuantity">
+                v-model="stockQuantity" :placeholder="product.stockQuantity">
               </div>
 
               <!-- description textarea -->
               <div class="a-spacing-top-medium">
-                <label>Title</label>
-                <textarea placeholder="Provide details such as product description"
-                style="width: 100%" v-model="description">
+                <label>Description</label>
+                <textarea
+                style="width: 100%" v-model="description" :placeholder="product.description">
                 </textarea>
               </div>
 
@@ -73,7 +73,7 @@
               <div class="a-spacing-top-large">
                 <span class="a-button-register">
                   <span class="a-button-inner">
-                    <span class="a-button-text" @click="onAddProduct">Add product</span>
+                    <span class="a-button-text" @click="onUpdateProduct">Add product</span>
                   </span>
                 </span>
               </div>
@@ -88,17 +88,19 @@
 <script>
 export default {
   // asyncData is used for only api calls
-  async asyncData({ $axios }) {
+  async asyncData({ $axios, params }) {
     try {
       const categories = $axios.$get('http://localhost:3000/api/categories');
       const owners = $axios.$get('http://localhost:3000/api/owners');
+      const product = $axios.$get(`http://localhost:3000/api/products/${params.id}`);
 
       // promise.all runs each fetch at the same time
-      const [catResponse, ownersResponse] = await Promise.all([categories, owners]);
+      const [catResponse, ownersResponse, productResponse] = await Promise.all([categories, owners, product]);
 
       return {
         categories: catResponse.categories,
         owners: ownersResponse.owners,
+        product: productResponse.product,
       };
     } catch (err) {
       console.log(err);
@@ -125,7 +127,7 @@ export default {
       this.fileName = event.target.files[0].name;
     },
 
-    async onAddProduct() {
+    async onUpdateProduct() {
       const data = new FormData();
 
       data.append('title', this.title);
@@ -136,7 +138,7 @@ export default {
       data.append('categoryID', this.categoryID);
       data.append('photo', this.selectedFile, this.selectedFile.name);
 
-      const result = await this.$axios.$post('http://localhost:3000/api/products', data);
+      const result = await this.$axios.$put(`http://localhost:3000/api/products/${this.$route.params.id}`, data);
 
       this.$router.push('/');
     },
