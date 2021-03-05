@@ -32,7 +32,7 @@ router.post('/products', upload.single('photo'), async (req, res) => {
 // GET REQUEST - GET ALL PRODUCTS
 router.get('/products', async (req, res) => {
   try {
-    const products = await Product.find();
+    const products = await Product.find().populate('owner category').exec();
 
     res.json({
       success: true,

@@ -1,3 +1,5 @@
+const URL = 'http://localhost:3000'
+
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -42,7 +44,10 @@ export default {
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {},
+  axios: {
+    proxy: true,
+    baseURL: URL
+  },
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa
   pwa: {
