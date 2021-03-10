@@ -58,6 +58,7 @@ router.get('/auth/user', verifyToken, async (req, res) => {
 // update profile route
 router.put('/auth/user', verifyToken, async (req, res) => {
   try {
+    // eslint-disable-next-line no-underscore-dangle
     const foundUser = await User.findOne({ _id: req.decoded._id });
 
     if (foundUser) {
@@ -65,7 +66,7 @@ router.put('/auth/user', verifyToken, async (req, res) => {
       if (req.body.email) foundUser.email = req.body.email;
       if (req.body.password) foundUser.password = req.body.password;
 
-      await foundUser.save;
+      await foundUser.save();
       res.json({
         success: true,
         message: 'Successsfully updated',

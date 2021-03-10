@@ -15,9 +15,7 @@
           <div class="col-sm-6 pt-0">
             <Search />
           </div>
-          <div class="col-sm-4">
-            p
-          </div>
+          <div class="col-sm-4" />
         </div>
 
         <div class="row">
