@@ -14,14 +14,8 @@
             <div class="a-box a-spacing-extra-large">
               <div class="a-box-inner">
                 <h1 class="a-spacing-small">
-                  Create account
+                  Sign in
                 </h1>
-
-                <!-- name -->
-                <div class="a-row a-spacing-base">
-                  <label for="ap_customer_name" class="a-form-label">Your name</label>
-                  <input id="ap_customer_name" v-model="name" type="text" class="a-input-text form-control auth-autofocus auth-required-field auth-contact-verification-request-info">
-                </div>
 
                 <!-- Email -->
                 <div class="a-row a-spacing-base">
@@ -44,7 +38,7 @@
                 <div class="a-row a-spacing-extra-large mb-4">
                   <span class="a-button-primary">
                     <span class="a-button-inner">
-                      <span class="a-button-text" @click="onSignup">Create your Amazon account</span>
+                      <span class="a-button-text" @click="onLogin">Continue</span>
                     </span>
                   </span>
 
@@ -59,8 +53,8 @@
                 <hr>
 
                 <div class="a-row">
-                  <b>Already have an account ?
-                    <nuxt-link class="a-link-emphasis" to="/login">Sign in</nuxt-link>
+                  <b>Don't have an account?
+                    <nuxt-link to="/signup" class="a-link-emphasis">Register</nuxt-link>
                   </b>
                 </div>
               </div>
@@ -85,28 +79,16 @@ export default {
   },
 
   methods: {
-    async onSignup () {
+    onLogin () {
       try {
-        const data = {
-          name: this.name,
-          email: this.email,
-          password: this.password
-        }
+        this.$auth.loginWith('local', {
+          data: {
+            email: this.email,
+            password: this.password
+          }
+        })
 
-        const response = await this.$axios.$post('/api/auth/signup', data)
-
-        console.log(response)
-
-        if (response.success) {
-          this.$auth.loginWith('local', {
-            data: {
-              email: this.email,
-              password: this.password
-            }
-          })
-
-          this.$router.push('/')
-        }
+        this.$router.push('/')
       } catch (err) {
         console.log(err)
       }

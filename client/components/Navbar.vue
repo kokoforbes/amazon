@@ -77,7 +77,7 @@
               <span class="icp-nav-link-border" />
               <!-- if user is logged in -->
               <template v-if="$auth.$state.loggedIn">
-                <nuxt-link id="nav-link-accountList" class="nav-a nav-a-2" tabindex="0">
+                <nuxt-link id="nav-link-accountList" to="/" class="nav-a nav-a-2" tabindex="0">
                   <span class="nav-line-1">Hello,</span>
                   <span class="nav-line-2">
                     {{ $auth.$state.user.name }}
@@ -86,7 +86,7 @@
               </template>
               <!-- if user isn't logged in -->
               <template v-else>
-                <nuxt-link id="nav-link-accountList" to="/register" class="nav-a nav-a-2" tabindex="0">
+                <nuxt-link id="nav-link-accountList" to="/signup" class="nav-a nav-a-2" tabindex="0">
                   <span class="nav-line-1">Hello, Sign in</span>
                   <span class="nav-line-2">
                     Account &amp; Lists
