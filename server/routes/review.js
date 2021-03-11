@@ -19,7 +19,7 @@ router.post('/reviews/:productID', [verifyToken, upload.single('photo')], async 
     review.user = req.decoded._id;
 
     //  update rating under proudct route
-    await Product.update({ $push: review._id });
+    await Product.update({ $push: { rating: review._id } });
 
     const savedReview = await review.save();
 

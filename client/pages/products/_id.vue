@@ -361,7 +361,7 @@
           </div>
         </div>
 
-        <ReviewSection />
+        <ReviewSection :product="product" :reviews="reviews" />
       </div>
     </div>
   </main>
@@ -375,9 +375,15 @@ export default {
   },
   async asyncData ({ $axios, params }) {
     try {
-      const response = await $axios.$get(`http://localhost:3000/api/products/${params.id}`)
+      const singleProduct = await $axios.$get(`/api/products/${params.id}`)
+      const manyReviews = await $axios.$get(`/api/reviews/${params.id}`)
+
+      const [productResponse, reviewResponse] = await Promise.all([
+        singleProduct, manyReviews
+      ])
       return {
-        product: response.product
+        product: productResponse.product,
+        reviews: reviewResponse.reviews
       }
     } catch (err) {
       console.log(err)
