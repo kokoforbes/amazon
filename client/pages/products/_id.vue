@@ -360,16 +360,22 @@
             </div>
           </div>
         </div>
+
+        <ReviewSection />
       </div>
     </div>
   </main>
 </template>
 <script>
+import ReviewSection from '~/components/ReviewSection'
+
 export default {
+  components: {
+    ReviewSection
+  },
   async asyncData ({ $axios, params }) {
     try {
       const response = await $axios.$get(`http://localhost:3000/api/products/${params.id}`)
-      console.log(response)
       return {
         product: response.product
       }
