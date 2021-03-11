@@ -6,7 +6,7 @@
         <div class="col-lg-4 col-md-5 col-sm-12">
           <!-- Total Customer reviews -->
           <a href="#" class="a-color-base">
-            <h2>{{ product.rating.length }} customer reviews</h2>
+            <h2>{{ product.reviews.length }} customer reviews</h2>
           </a>
           <div class="cr-widget-ACR">
             <i class="fas fa-star" />
@@ -251,7 +251,7 @@
             <div class="card-padding">
               <div class="review-header">
                 <h3>
-                  <span class="a-size-base">Showing 1-8 of {{ product.rating.length }} reviews</span>
+                  <span class="a-size-base">Showing 1-8 of {{ product.reviews.length }} reviews</span>
                 </h3>
               </div>
               <div class="review-sort-type">
@@ -285,7 +285,7 @@
                 <div class="a-row">
                   <!-- Review Star -->
                   <a href="#">
-                    <i v-for="i in review.rating" :key="i" class="fas fa-star" />
+                    <i v-for="i in review.reviews" :key="i" class="fas fa-star" />
                   </a>
                   <span class="a-letter-space" />
                   <!-- Review Headline -->

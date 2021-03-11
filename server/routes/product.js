@@ -32,7 +32,7 @@ router.post('/products', upload.single('photo'), async (req, res) => {
 // GET REQUEST - GET ALL PRODUCTS
 router.get('/products', async (req, res) => {
   try {
-    const products = await Product.find().populate('owner category').exec();
+    const products = await Product.find().populate('owner category').populate('reviews', 'rating').exec();
 
     res.json({
       success: true,
@@ -49,7 +49,7 @@ router.get('/products', async (req, res) => {
 // GET REQUEST - GET A SINGLE PRODUCT
 router.get('/products/:id', async (req, res) => {
   try {
-    const product = await Product.findOne({ _id: req.params.id }).populate('owner category').exec();
+    const product = await Product.findOne({ _id: req.params.id }).populate('owner category').populate('reviews', 'rating').exec();
 
     res.json({
       success: true,
