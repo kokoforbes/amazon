@@ -32,4 +32,21 @@ router.post('/addresses', verifyToken, async (req, res) => {
   }
 });
 
+// GET REQUESTß
+router.get('/addresses', verifyToken, async (req, res) => {
+  try {
+    const addresses = await Address.find({ user: req.decoded._id });
+
+    res.json({
+      success: true,
+      addresses,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+});
+
 module.exports = router;
