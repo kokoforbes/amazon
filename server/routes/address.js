@@ -54,7 +54,7 @@ router.get('/addresses', verifyToken, async (req, res) => {
 // Edit single address
 router.put('/addresses/:id', verifyToken, async (req, res) => {
   try {
-    const foundAddress = await Address.findOne({ _id: req.decoded._id });
+    const foundAddress = await Address.findOne({ user: req.decoded._id, _id: req.params.id });
 
     if (foundAddress) {
       if (req.body.country) foundAddress.country = req.body.country;
@@ -69,10 +69,28 @@ router.put('/addresses/:id', verifyToken, async (req, res) => {
       if (req.body.securityCode) foundAddress.securityCode = req.body.securityCode;
 
       await foundAddress.save();
+
+      res.json({
+        success: true,
+        message: 'Successfullly updated address',
+      });
     }
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+});
+
+// GET single address
+router.get('/addresses/:id', verifyToken, async (req, res) => {
+  try {
+    const address = await Address.findOne({ _id: req.params.id });
 
     res.json({
       success: true,
+      address,
       message: 'Successfullly updated address',
     });
   } catch (err) {
@@ -91,7 +109,7 @@ router.delete('/addresses/:id', verifyToken, async (req, res) => {
     if (deletedAddress) {
       res.json({
         success: true,
-        message: 'Successfullly delted address',
+        message: 'Successfullly deleted address',
       });
     }
   } catch (err) {
