@@ -2,6 +2,7 @@
 const router = require('express').Router();
 const axios = require('axios');
 const Address = require('../models/address');
+const User = require('../models/user');
 const verifyToken = require('../middlewares/verify-token');
 
 // POST REQUESTß
@@ -91,6 +92,26 @@ router.delete('/addresses/:id', verifyToken, async (req, res) => {
       res.json({
         success: true,
         message: 'Successfullly delted address',
+      });
+    }
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+});
+
+// set defaukt address
+router.put('/addresses/set/default', verifyToken, async (req, res) => {
+  try {
+    const updatedUserAddress = await User.findOneAndUpdate({ _id: req.decoded._id },
+      { $set: { address: req.body.id } });
+
+    if (updatedUserAddress) {
+      res.json({
+        success: true,
+        message: 'Successfullly set this address as default',
       });
     }
   } catch (err) {
