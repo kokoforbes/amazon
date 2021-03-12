@@ -26,7 +26,7 @@
                 <div id="nav-packard-glow-loc-icon" class="nav-sprite" />
                 <div id="glow-ingress-block">
                   <span id="glow-ingress-line1" class="nav-line-1">Deliver to</span>
-                  <span id="glow-ingress-line2" class="nav-line-2">California</span>
+                  <span id="glow-ingress-line2" class="nav-line-2">{{ $auth.$state.user.address.city }}</span>
                 </div>
               </nuxt-link>
             </div>

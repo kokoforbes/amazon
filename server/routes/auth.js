@@ -38,7 +38,7 @@ router.post('/auth/signup', async (req, res) => {
 // profile route
 router.get('/auth/user', verifyToken, async (req, res) => {
   try {
-    const foundUser = await User.findOne({ _id: req.decoded._id });
+    const foundUser = await User.findOne({ _id: req.decoded._id }).populate('address').exec();
 
     if (foundUser) {
       res.json({
