@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 const router = require('express').Router();
+const axios = require('axios');
 const Address = require('../models/address');
 const verifyToken = require('../middlewares/verify-token');
 
@@ -32,7 +33,7 @@ router.post('/addresses', verifyToken, async (req, res) => {
   }
 });
 
-// GET REQUESTß
+// GET REQUEST
 router.get('/addresses', verifyToken, async (req, res) => {
   try {
     const addresses = await Address.find({ user: req.decoded._id });
@@ -40,6 +41,23 @@ router.get('/addresses', verifyToken, async (req, res) => {
     res.json({
       success: true,
       addresses,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+});
+
+// GET countries
+router.get('/countries', async (req, res) => {
+  try {
+    const response = await axios.get('https://restcountries.eu/rest/v2/all');
+
+    res.json({
+      success: true,
+      countries: response.data,
     });
   } catch (err) {
     res.status(500).json({
