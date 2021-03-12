@@ -219,7 +219,7 @@ export default {
         const response = await this.$axios.$post('/api/addresses', data)
 
         if (response.success) {
-          this.$router.push('/')
+          this.$router.push('/address')
         }
       } catch (err) {
         console.log(err)
