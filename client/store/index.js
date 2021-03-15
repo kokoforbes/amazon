@@ -65,6 +65,19 @@ export const mutations = {
 
     const indexOfProduct = state.cart.indexOf(cartProduct)
     state.cart.splice(indexOfProduct, 1, cartProduct)
+  },
+
+  /*
+  1. Remove product quantity from cartLength
+  2. Get index of product to be deleted
+  3. Remove the product using splice
+   */
+  removeProduct (state, product) {
+    state.cartLength -= product.quantity
+
+    const indexOfProduct = state.cart.indexOf(product)
+
+    state.cart.splice(indexOfProduct, 1)
   }
 }
 
