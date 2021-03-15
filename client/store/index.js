@@ -42,6 +42,29 @@ export const mutations = {
         state.cartLength += product.quantity
       })
     }
+  },
+
+  /*
+  1. Find product in cart
+  2. Change the quantity of the product
+  3. Update the length of cart
+  4. Replace old product with updated product
+  */
+  changeQty (state, { product, qty }) {
+    const cartProduct = state.cart.find(prod => prod._id === product._id)
+    cartProduct.quantity = qty
+
+    state.cartLength = 0
+
+    if (state.cart.length > 0) {
+      // eslint-disable-next-line array-callback-return
+      state.cart.map((product) => {
+        state.cartLength += product.quantity
+      })
+    }
+
+    const indexOfProduct = state.cart.indexOf(cartProduct)
+    state.cart.splice(indexOfProduct, 1, cartProduct)
   }
 }
 
