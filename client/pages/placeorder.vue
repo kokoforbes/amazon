@@ -119,7 +119,7 @@
                   <div
                     class="a-row a-color-state a-text-bold a-size-medium a-spacing-small"
                   >
-                    Estimated delivery: 29 November 2019
+                    Estimated delivery: {{ estimatedDelivery }}
                   </div>
                   <div class="row">
                     <!-- Cart -->
@@ -186,7 +186,7 @@
                           <!-- Delivery option -->
                           <div class="a-spacing-mini wednesday">
                             <!-- Shipping normal -->
-                            <input type="radio" name="order0">
+                            <input type="radio" name="order0" checked="checked" @change="onChooseShipping('normal')">
                             <span class="a-radio-label">
                               <span class="a-color-success">
                                 <strong>Averages 7 business days</strong>
@@ -200,7 +200,7 @@
                           <br>
                           <div class="a-spacing-mini tuesday">
                             <!-- Shipping fast -->
-                            <input type="radio" name="order0">
+                            <input type="radio" name="order0" @change="onChooseShipping('fast')">
                             <span class="a-radio-label">
                               <span class="a-color-success">
                                 <strong>Averages 3 business days</strong>
@@ -265,7 +265,7 @@
                           Shipping & handling:
                         </div>
                         <div class="col-sm-6 text-right">
-                          USD 92
+                          USD {{ shippingPrice }}
                         </div>
                       </div>
                       <div class="row mt-2">
@@ -280,7 +280,7 @@
                           Total Before Tax:
                         </div>
                         <div class="col-sm-6 text-right">
-                          USD 300023
+                          USD {{ getCartTotalPriceWithShipping }}
                         </div>
                       </div>
                       <div class="row">
@@ -301,7 +301,7 @@
                         <div class="col-sm-6 text-right">
                           <!-- Total Price with Shipping -->
                           <div class="a-color-price a-size-medium a-text-bold">
-                            USD 300023
+                            USD {{ getCartTotalPriceWithShipping }}
                           </div>
                         </div>
                       </div>
@@ -394,8 +394,45 @@ import { mapGetters } from 'vuex'
 
 export default {
   layout: 'none',
+
+  async asyncData ({ $axios, store }) {
+    try {
+      const response = await $axios.post('/api/shipment', { shipment: 'normal' })
+
+      store.commit('setShipping', {
+        shippingPrice: response.data.shipment.price,
+        estimatedDelivery: response.data.estimated
+      })
+
+      return {
+        shippingPrice: response.data.shipment.price,
+        estimatedDelivery: response.data.shipment.estimated
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  },
+
   computed: {
-    ...mapGetters(['getCart', 'getCartTotalPrice'])
+    ...mapGetters(['getCart', 'getCartTotalPrice', 'getCartTotalPriceWithShipping'])
+  },
+
+  methods: {
+    async onChooseShipping (shipment) {
+      try {
+        const response = await this.$axios.post('/api/shipment', { shipment })
+
+        this.$store.commit('setShipping', {
+          shippingPrice: response.data.shipment.price,
+          estimatedDelivery: response.data.estimated
+        })
+
+        this.shippingPrice = response.data.shipment.price
+        this.estimatedDelivery = response.data.shipment.estimated
+      } catch (err) {
+        console.log(err)
+      }
+    }
   }
 }
 </script>
