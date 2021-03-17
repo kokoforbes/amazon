@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const moment = require('moment');
-const stripe = require('stripe');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const verifyToken = require('../middlewares/verify-token');
 const Order = require('../models/order');
 
@@ -63,6 +63,11 @@ router.post('/payment', verifyToken, (req, res) => {
     order.owner = req.decoded._id;
     order.estimatedDelivery = req.body.estimatedDelivery;
     await order.save();
+
+    res.json({
+      success: true,
+      message: 'Successfully made payment',
+    });
   })
     .catch((err) => {
       res.status(500).json({
