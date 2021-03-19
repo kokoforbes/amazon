@@ -1,3 +1,4 @@
+/* eslint-disable */
 const router = require('express').Router();
 const moment = require('moment');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
@@ -42,17 +43,21 @@ router.post('/payment', verifyToken, (req, res) => {
 
   stripe.customers.create({
     email: req.decoded.email,
-  }).then((customer) => stripe.customers.createSource(customer.id, {
+  }).then(customer => {
+    return stripe.customers.createSource(customer.id, {
     source: 'tok_visa',
-  })).then((source) => stripe.charges.create({
+  });
+  }).then(source => {
+    return stripe.charges.create({
     amount: totalPrice,
     currency: 'usd',
     customer: source.customer,
-  })).then(async (charge) => {
-    const order = new Order();
-    const { cart } = req.body;
+   })
+  }).then(async charge => {
+    let order = new Order();
+    let cart  = req.body.cart;
 
-    cart.map((product) => {
+    cart.map(product => {
       order.products.push({
         productID: product._id,
         quantity: parseInt(product.quantity),

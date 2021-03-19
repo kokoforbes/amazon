@@ -424,7 +424,7 @@ export default {
 
         this.$store.commit('setShipping', {
           shippingPrice: response.data.shipment.price,
-          estimatedDelivery: response.data.estimated
+          estimatedDelivery: response.data.shipment.estimated
         })
 
         this.shippingPrice = response.data.shipment.price

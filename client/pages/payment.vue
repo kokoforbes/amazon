@@ -84,6 +84,7 @@
   </main>
   <!--/MAIN-->
 </template>
+<script src="https://js.stripe.com/v3/"></script>
 
 <script>
 import { mapGetters } from 'vuex'
@@ -97,11 +98,10 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['getcart', 'getCartTotalPriceWithShipping', 'getEstimatedDelivery'])
+    ...mapGetters(['getCart', 'getCartTotalPriceWithShipping', 'getEstimatedDelivery'])
   },
 
   mounted () {
-    // eslint-disable-next-line no-undef
     this.stripe = Stripe('pk_test_51IVh7dIZI5blhPBaHbe5WhB5AgdChg2gPR5G1KXnSwpG2CSA6i0ZjK0ztv3ZdGWU1McJJOqiuRrJt7gMw8417Qj100uO00u1Ct')
     const elements = this.stripe.elements()
     this.card = elements.create('card')
@@ -111,10 +111,11 @@ export default {
   methods: {
     async onPurchase () {
       try {
+        console.log(this.getEstimatedDelivery)
         const token = await this.stripe.createToken(this.card)
         const response = await this.$axios.$post('/api/payment', {
           token,
-          totalPrie: this.getCartTotalPriceWithShipping,
+          totalPrice: this.getCartTotalPriceWithShipping,
           cart: this.getCart,
           estimatedDelivery: this.getEstimatedDelivery
         })
