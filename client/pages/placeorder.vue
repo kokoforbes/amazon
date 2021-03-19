@@ -401,7 +401,7 @@ export default {
 
       store.commit('setShipping', {
         shippingPrice: response.data.shipment.price,
-        estimatedDelivery: response.data.estimated
+        estimatedDelivery: response.data.shipment.estimated
       })
 
       return {

@@ -111,7 +111,6 @@ export default {
   methods: {
     async onPurchase () {
       try {
-        console.log(this.getEstimatedDelivery)
         const token = await this.stripe.createToken(this.card)
         const response = await this.$axios.$post('/api/payment', {
           token,
@@ -122,7 +121,7 @@ export default {
 
         if (response.success) {
           this.$store.commit('clearCart')
-          this.$router.push('/')
+          this.$router.push('/orders')
         }
       } catch (err) {
         console.log(err)
