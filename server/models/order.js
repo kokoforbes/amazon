@@ -1,9 +1,11 @@
 const mongoose = require('mongoose');
 
+const deepPopulate = require('mongoose-deep-populate')(mongoose);
+
 const { Schema } = mongoose;
 
 const OrderSchema = new Schema({
-  Owner: { type: Schema.Types.ObjectId, ref: 'Owner' },
+  owner: { type: Schema.Types.ObjectId, ref: 'User' },
   products: [{
     productID: { type: Schema.Types.ObjectId, ref: 'Product' },
     quantity: Number,
@@ -11,5 +13,7 @@ const OrderSchema = new Schema({
   }],
   estimatedDelivery: String,
 });
+
+OrderSchema.plugin(deepPopulate);
 
 module.exports = mongoose.model('Order', OrderSchema);
