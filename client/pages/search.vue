@@ -128,7 +128,19 @@ import StarRating from 'vue-star-rating'
 export default {
   components: {
     StarRating
-  }
+  },
+
+  async asyncData ({ $axios, query }) {
+    try {
+      const products = await $axios.$post('/api/search', { title: query.title })
+      return {
+        products
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  },
+  watchQuery: ['title']
 }
 </script>
 

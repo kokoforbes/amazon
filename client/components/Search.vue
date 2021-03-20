@@ -15,6 +15,7 @@
     <form novalidate="novalidate" onsubmit="return false;" class="searchbox sbx-amazon">
       <div role="search" class="sbx-amazon__wrapper">
         <input
+          v-model="query"
           type="search"
           name="search"
           placeholder="Search your favorite product"
@@ -22,7 +23,7 @@
           required="required"
           class="sbx-amazon__input"
         >
-        <button type="submit" title="Submit your search query." class="sbx-amazon__submit">
+        <button type="submit" title="Submit your search query." class="sbx-amazon__submit" @click="onSearch">
           <svg role="img" aria-label="Search">
             <use xlink:href="#sbx-icon-search-11" />
           </svg>
@@ -36,3 +37,21 @@
     </form>
   </div>
 </template>
+<script>
+export default {
+  data () {
+    return {
+      query: ''
+    }
+  },
+
+  methods: {
+    onSearch () {
+      this.$router.push({
+        path: '/search',
+        query: { title: this.query }
+      })
+    }
+  }
+}
+</script>
